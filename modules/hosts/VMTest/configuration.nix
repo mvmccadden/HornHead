@@ -85,7 +85,7 @@
 
     environment.systemPackages = with pkgs; [
       # Development Applications
-      git
+      self.packages.${pkgs.system}.git
       foot
       neovim
       zed-editor
