@@ -1,80 +1,105 @@
 { self, inputs, ... }: {
   flake.nixosModules.niri = { pkgs, lib, ... }: {
+    services.upower.enable = true;
+
     programs.niri = {
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
     };
   };
 
-  perSystem = { pkgs, lib, self', ... }: {
+  perSystem = { pkgs, lib, self', system, ... }: let
+    unfreePkgs = import pkgs.path {
+      inherit (pkgs.stdenv.hostPlatform) system;
+      config.allowUnfree = true;
+    };
+  in {
     packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
-      inherit pkgs;
+      pkgs = unfreePkgs;
+      # Make sure unfree package calls work
       settings = {
-	hotkey-overlay.skip-at-startup = true;
+        hotkey-overlay.skip-at-startup = true;
 
         spawn-at-startup = [
-	  (lib.getExe self'.packages.myNoctalia)
-	];
+          (lib.getExe self'.packages.myNoctalia)
+        ];
 
-	xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
+        xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
-	input.keyboard.xkb.layout =  "us,ua";
-	# May not need this now
-	#input.keyboard.xkb.options = "caps:ctrl_modifier";
-	input.keyboard.xkb.options = "ctrl:swapcaps";
+        # Input
+        input = {
+          mouse = {
+            natural-scroll = { };
+          };
 
-	# Layout settings
-	layout.gaps = 4;
-	layout.focus-ring.width = 1;
-        # Ensure focus ring is a true ring and not a background rectangle
+          touchpad = {
+            natural-scroll = { };
+          };
+
+          keyboard = {
+            xkb.layout = "us,ua";
+            xkb.options = "ctrl:swapcaps";
+            #xkb.options = "caps:ctrl_modifer";
+          };
+        };
         
-	# Window rules
-	window-rule.geometry-corner-radius = 15;
-	window-rule.clip-to-geometry = true;
+        # Layout settings
+        layout.gaps = 6;
+        layout.focus-ring.width = 2;
+        layout.struts.top = 6;
+        layout.struts.bottom = 6;
+        # Ensure focus ring is a true ring and not a background rectangle
+              
+        # Window rules
+        window-rule.geometry-corner-radius = 15;
+        window-rule.clip-to-geometry = true;
 
-	prefer-no-csd = true;
+        prefer-no-csd = true;
 
-	binds = {
-	  # Open applications
-	  "Mod+Return".spawn-sh = lib.getExe pkgs.foot;
-	  "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages."${pkgs.system}".beta;
+        binds = {
+          # Open applications
+          "Mod+Return".spawn-sh = lib.getExe pkgs.foot;
+          "Mod+E".spawn-sh = lib.getExe unfreePkgs.zed-editor;
+          "Mod+O".spawn-sh = lib.getExe unfreePkgs.obsidian;
+          "Mod+D".spawn-sh = lib.getExe unfreePkgs.discord;
+          "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages."${pkgs.system}".beta;
 
-	  # Desktop Functionality
-	  "Mod+Q".close-window = null;
+          # Desktop Functionality
+          "Mod+Q".close-window = _: {};
 
-	  "Mod+M".maximize-column = null;
-	  "Mod+F".fullscreen-window = null;
-	  "Mod+Shift+F".toggle-window-floating = null;
-	  "Mod+C".center-column = null;
+          "Mod+M".maximize-column = _: {};
+          "Mod+F".fullscreen-window = _: {};
+          "Mod+Shift+F".toggle-window-floating = _: {};
+          "Mod+C".center-column = _: {};
 
-	  "Mod+H".focus-column-left = null;
-	  "Mod+L".focus-column-right = null;
-	  "Mod+K".focus-window-up = null;
-	  "Mod+J".focus-window-down = null;
+          "Mod+H".focus-column-left = _: {};
+          "Mod+L".focus-column-right = _: {};
+          "Mod+K".focus-window-up = _: {};
+          "Mod+J".focus-window-down = _: {};
 
-	  "Mod+Shift+H".move-column-left = null;
-	  "Mod+Shift+L".move-column-right = null;
-	  "Mod+Shift+K".move-column-to-workspace-up = {};
-	  "Mod+Shift+J".move-column-to-workspace-down= {};
+          "Mod+Shift+H".move-column-left = _: {};
+          "Mod+Shift+L".move-column-right = _: {};
+          "Mod+Shift+K".move-column-to-workspace-up = {};
+          "Mod+Shift+J".move-column-to-workspace-down= {};
 
-	  "Mod+WheelScrollDown".focus-column-left = null;
-	  "Mod+WheelScrollUp".focus-column-right = null;
-	  "Mod+Shift+WheelScrollDown".focus-workspace-down = null;
-	  "Mod+Shift+WheelScrollUp".focus-workspace-up = null;
-	  "Mod+Shift+D".focus-workspace-down = null;
-	  "Mod+Shift+U".focus-workspace-up = null;
+          "Mod+WheelScrollDown".focus-column-left = _: {};
+          "Mod+WheelScrollUp".focus-column-right = _: {};
+          "Mod+Shift+WheelScrollDown".focus-workspace-down = _: {};
+          "Mod+Shift+WheelScrollUp".focus-workspace-up = _: {};
+          "Mod+Shift+D".focus-workspace-down = _: {};
+          "Mod+Shift+U".focus-workspace-up = _: {};
 
-	  # Extra
-	  "Mod+Space".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle"; 
-	  "Mod+Escape".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call controlCenter toggle";
-	  "Mod+S".spawn-sh = lib.getExe (pkgs.writeShellApplication {
-	    name = "screenshot";
-	    text = ''
-	      ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} -w 0)" - \
-	      | ${pkgs.wl-clipboard}/bin/wl-copy
-	    '';
-	  });
-	};
+          # Extra
+          "Mod+Space".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle"; 
+          "Mod+Escape".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call controlCenter toggle";
+          "Mod+S".spawn-sh = lib.getExe (pkgs.writeShellApplication {
+            name = "screenshot";
+            text = ''
+              ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} -w 0)" - \
+            | ${pkgs.wl-clipboard}/bin/wl-copy
+          '';
+          });
+        };
       };
     };
   };

@@ -31,36 +31,61 @@
             confirm = true;
             clipboard = "unnamedplus";
           };
+
+          binds.whichKey.enable = true;
     
           # Plugins
           telescope.enable = true;
           treesitter.enable = true;
+
           git.gitsigns = {
             enable = true;
             codeActions.enable = true;
             setupOpts = {
               signs = {
-                add = { text = "+"; };
-                change = { text = "~"; };
-                delete = { text = "_"; };
-                topdelete = { text = "-"; };
-                changedelete = { text = "\\"; };
+                add          = { text = "▎"; }; # A clean vertical bar
+                change       = { text = "▎"; };
+                delete       = { text = ""; }; # A small arrow pointing right
+                topdelete    = { text = ""; };
+                changedelete = { text = "▎"; };
+                untracked    = { text = "┆"; }; # Dotted line for new files
               };
             };
           };
 
           visuals.nvim-web-devicons.enable = true;
-          filetree.nvimTree = {
+          ui.noice.enable = true;
+
+          filetree.neo-tree = {
             enable = true;
-            openOnSetup = false;
             setupOpts = {
-              view = {
+              window = {
+                position = "left";
                 width = 30;
-                side = "left";
               };
-              # Make sure we can see git files
-              filters.git_ignored = false;
-              renderer.icons.show.file = true;
+              default_component_config = {
+                icon = {
+                  folder_closed = "";
+                  folder_open = "";
+                  folder_empty = "󰜌";
+                  default = "󰈚";
+                  highlight = "NeoTreeFileIcon";
+                };
+                # Git status icons
+                git_status = {
+                  symbols = {
+                    added     = "✚";
+                    modified  = "";
+                    deleted   = "✖";
+                    renamed   = "󰁯";
+                    untracked = "";
+                    ignored   = "";
+                    unstaged  = "󰄱";
+                    staged    = "";
+                    conflict  = "";
+                  };
+                };
+              };
             };
           };
 
@@ -68,10 +93,39 @@
             enable = true;
             setupOpts = {
               direction = "horizontal";
-              size = 20;
+              size = 15;
               open_mapping = "[[<c-t>]]";
             };
           };
+
+          # LSP
+          lsp = {
+            enable = true;
+            # Is annoying
+            #lightbulb.enable = true;
+            lspSignature.enable = true;
+            trouble.enable = true;
+          };
+
+          languages = {
+            enableTreesitter = true;
+
+            clang.enable = true;
+            rust.enable = true;
+            go.enable = true;
+
+            python.enable = true;
+            typescript.enable = true;
+            lua.enable = true;
+            css.enable = true;
+
+            nix.enable = true;
+            markdown.enable = true;
+            cmake.enable = true;
+            html.enable = true;
+          };
+
+          autocomplete.nvim-cmp.enable = true;
 
           # Themeing
           theme = {
@@ -122,8 +176,8 @@
             { 
               key = "<leader>t"; 
               mode = "n"; 
-              action = ":NvimTreeToggle<CR>"; 
-              desc = "[T]erminal";
+              action = ":Neotree toggle<CR>"; 
+              desc = "Toggle Neo-[T]ree";
             }
             {
               key = "<C-h>";
@@ -144,6 +198,26 @@
               key = "<C-k>";
               mode = "n";
               action = "<C-w><C-k>";
+            }
+            {
+              key = "<C-H>";
+              mode = "n";
+              action = "<C-w><C-H>";
+            }
+            {
+              key = "<C-L>";
+              mode = "n";
+              action = "<C-w><C-L>";
+            }
+            {
+              key = "<C-J>";
+              mode = "n";
+              action = "<C-w><C-J>";
+            }
+            {
+              key = "<C-K>";
+              mode = "n";
+              action = "<C-w><C-K>";
             }
           ];
         };

@@ -3,13 +3,13 @@
     environment.systemPackages = [ pkgs.foot ];
 
     environment.etc."xdg/foot/foot.ini".text = ''
-      font=JetBrains Mono:size=9
+      font=JetBrainsMono Nerd Font:size=11
 
       [main]
       include=~/.config/foot/themes/noctalia
 
       [colors-dark]
-      alpha=0.9
+      alpha=0.95
       alpha-mode=all
 
       [mouse]
