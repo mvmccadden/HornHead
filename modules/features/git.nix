@@ -10,6 +10,8 @@
         };
         init.defaultBranch = "main";
         credential.helper = "libsecret";
+        # Disable the askpass popup and use terminal request instead
+        core.askpass = "";
       };
     };
   };
