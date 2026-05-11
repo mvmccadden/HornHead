@@ -100,6 +100,9 @@
       python3
       nodejs
       rustup
+      # Nix Applications 
+      direnv
+      nix-direnv
       # Embedded
       gcc-arm-embedded
       # System applications

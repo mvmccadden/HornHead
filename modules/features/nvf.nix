@@ -174,10 +174,10 @@
           # Keybinds
           keymaps = [
             { 
-              key = "<leader>t"; 
+              key = "<C-r>"; 
               mode = "n"; 
               action = ":Neotree toggle<CR>"; 
-              desc = "Toggle Neo-[T]ree";
+              desc = "Toggle Neo-T[r]ee";
             }
             {
               key = "<C-h>";
