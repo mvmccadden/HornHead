@@ -52,9 +52,19 @@
               };
             };
           };
-
+          
           visuals.nvim-web-devicons.enable = true;
-          ui.noice.enable = true;
+          ui.noice = {
+            enable = true;
+            setupOpts = {
+              lsp.signature.auto_open.enable = false;
+              # Add a popup when recording begins
+              routes = [{
+                view = "cmdline_popup";
+                filter = { event = "msg_showmode"; find = "recording"; };
+              }];
+            };
+          };
 
           filetree.neo-tree = {
             enable = true;
