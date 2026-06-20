@@ -110,6 +110,8 @@
       # User Applications
       obsidian
       discord
+      yazi
+      thunar
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     ];
 
@@ -132,6 +134,8 @@
     nix.gc.automatic = true;
     nix.gc.dates = "daily";
     nix.gc.options = "--delete-older-than 10d";
+    nix.gc.persistent = true;
+    boot.loader.systemd-boot.configurationLimit = 5;
     nix.settings.auto-optimise-store = true;
   };
 }

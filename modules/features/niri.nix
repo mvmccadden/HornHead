@@ -91,7 +91,8 @@
 
           # Extra
           "Mod+Space".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle"; 
-          "Mod+Escape".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call controlCenter toggle";
+          "Mod+Backspace".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call controlCenter toggle";
+          "Mod+Escape".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call sessionMenu toggle";
           "Mod+S".spawn-sh = lib.getExe (pkgs.writeShellApplication {
             name = "screenshot";
             text = ''

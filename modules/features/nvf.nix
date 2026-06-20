@@ -52,12 +52,18 @@
               };
             };
           };
-          
+
           visuals.nvim-web-devicons.enable = true;
+
+          # Enables notifications for noice
+          notify.nvim-notify.enable = true;
           ui.noice = {
             enable = true;
             setupOpts = {
               lsp.signature.auto_open.enable = false;
+              presets = {
+                command_palette = true;
+              };
               # Add a popup when recording begins
               routes = [{
                 view = "cmdline_popup";
@@ -115,6 +121,19 @@
             #lightbulb.enable = true;
             lspSignature.enable = true;
             trouble.enable = true;
+
+            lspconfig.sources.nil_ls = ''
+              local lspconfig = require('lspconfig')
+              lspconfig.nil_ls.setup({
+                settings = {
+                  ['nil'] = {
+                    nix = {
+                      autoArchive = false,
+                    },
+                  },
+                },
+              })
+            '';
           };
 
           languages = {
@@ -184,10 +203,10 @@
           # Keybinds
           keymaps = [
             { 
-              key = "<C-r>"; 
+              key = "<C-e>"; 
               mode = "n"; 
               action = ":Neotree toggle<CR>"; 
-              desc = "Toggle Neo-T[r]ee";
+              desc = "Toggle Neo-Tr[e]e";
             }
             {
               key = "<C-h>";
