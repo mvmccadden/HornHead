@@ -46,17 +46,17 @@
         outputs = {
           "DP-4" = {
             transform = "normal";
-            position = {x = 0; y = 0; };
+            position = _: { props = { x = 0; y = 0; }; };
           };
 
           "DP-5" = {
             transform = "normal";
-            position = {x = -1080; y = 0; };
+            position = _: { props = { x = -1920; y = 0; }; };
           };
 
           "HDMI-A-2" = {
             transform = "90";
-            position = {x = 1080; y = 0; };
+            position = _: { props = { x = 1920; y = 0; }; };
           };
         };
         
