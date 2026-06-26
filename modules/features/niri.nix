@@ -42,6 +42,23 @@
             #xkb.options = "caps:ctrl_modifer";
           };
         };
+
+        outputs = {
+          "DP-4" = {
+            transform = "normal";
+            position = {x = 0; y = 0; };
+          };
+
+          "DP-5" = {
+            transform = "normal";
+            position = {x = -1080; y = 0; };
+          };
+
+          "HDMI-A-2" = {
+            transform = "90";
+            position = {x = 1080; y = 0; };
+          };
+        };
         
         # Layout settings
         layout.gaps = 6;
