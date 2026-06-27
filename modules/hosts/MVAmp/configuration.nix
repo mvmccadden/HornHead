@@ -15,6 +15,13 @@
     # Bootloader
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
+    # Attempt to help Nvidia handle console properly
+    boot.loader.systemd-boot.consoleMode = "1";
+    boot.loader.grub.gfxmodeEfi= "1024x768";
+    boot.kernelParams = [ 
+      "nvidia_drm.modeset=1"
+      "nvidia_drm.fbdev=1" 
+    ];
 
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -79,9 +86,9 @@
       isNormalUser = true;
       description = "Manoel McCadden";
       extraGroups = [ "networkmanager" "wheel" ];
-      packages = with pkgs; [
+      #packages = with pkgs; [
       #  thunderbird
-      ];
+      #];
     };
 
     # Allow unfree packages
@@ -127,6 +134,14 @@
 
     # Setups zen to be default browser for clicking on links
     #xdg.portal.enable = true;
+
+    # Setup nvidia stuff
+    hardware.nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained= false;
+      open = false;
+    };
 
     system.stateVersion = "26.05";
 

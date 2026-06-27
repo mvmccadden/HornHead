@@ -29,7 +29,8 @@
         # Input
         input = {
           mouse = {
-            natural-scroll = { };
+            # Using traditional scroll
+            #natural-scroll = { };
           };
 
           touchpad = {
@@ -44,17 +45,18 @@
         };
 
         outputs = {
-          "DP-4" = {
-            transform = "normal";
-            position = _: { props = { x = 0; y = 0; }; };
-          };
-
           "DP-5" = {
             transform = "normal";
             position = _: { props = { x = -1920; y = 0; }; };
           };
 
-          "HDMI-A-2" = {
+          "DP-4" = {
+            mode = "1920x1080@144";
+            transform = "normal";
+            position = _: { props = { x = 0; y = 0; }; };
+          };
+
+          "Sceptre Tech Inc E205W-1600 0x062233CD" = {
             transform = "90";
             position = _: { props = { x = 1920; y = 0; }; };
           };
@@ -96,6 +98,8 @@
 
           "Mod+Shift+H".move-column-left = _: {};
           "Mod+Shift+L".move-column-right = _: {};
+          "Mod+Ctrl+H".move-window-to-monitor-left = _: {};
+          "Mod+Ctrl+L".move-window-to-monitor-right = _: {};
           "Mod+Shift+K".move-column-to-workspace-up = {};
           "Mod+Shift+J".move-column-to-workspace-down= {};
 

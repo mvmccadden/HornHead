@@ -56,7 +56,12 @@
           visuals.nvim-web-devicons.enable = true;
 
           # Enables notifications for noice
-          notify.nvim-notify.enable = true;
+          notify.nvim-notify = {
+            enable = true;
+            setupOpts = {
+              background_colour = "#000000";
+            };
+          };
           ui.noice = {
             enable = true;
             setupOpts = {
