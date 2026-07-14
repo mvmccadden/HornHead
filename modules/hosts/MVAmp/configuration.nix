@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
  
-  flake.nixosModules.MVAmpConfiguration = { pkgs, libs, ... }: {
+  flake.nixosModules.MVAmpConfiguration = { pkgs, libs, config, ... }: {
 
     # Import modules
     imports = [
@@ -15,19 +15,33 @@
     # Bootloader
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
-    # Attempt to help Nvidia handle console properly
-    boot.loader.systemd-boot.consoleMode = "1";
-    boot.loader.grub.gfxmodeEfi= "1024x768";
-    boot.kernelParams = [ 
-      "nvidia_drm.modeset=1"
-      "nvidia_drm.fbdev=1" 
-    ];
 
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
     networking.hostName = "nixos";
 
-    networking.networkmanager.enable = true;
+    networking.networkmanager= {
+      enable = true;
+      wifi.backend = "iwd";
+      settings = {
+        connection = {
+          "wifi.powersave" = 2;
+        };
+      };
+    };
+
+    networking.wireless.iwd = {
+      enable = true;
+      settings = {
+        General = {
+          DisablePeriodicScan = true;
+          AddressRandomization = "none";
+        };
+        Network = {
+          NameResolutionService = "systemd-resolved";
+        };
+      };
+    };
 
     time.timeZone = "America/Los_Angeles";
 
@@ -47,15 +61,42 @@
     # Enable the X11 windowing system.
     services.xserver.enable = true;
 
-    # Disable the GNOME Desktop Environment.
-    services.displayManager.gdm.enable = false;
-    services.desktopManager.gnome.enable = false;
-
-    # Keyring service 
-    services.gnome.gnome-keyring.enable = true;
+    # Enable GNOME 
+    services.displayManager.gdm.enable = true;
+    services.desktopManager.gnome.enable = true;
 
     # Setup niri as default enviornment
     services.displayManager.defaultSession = "niri";
+
+    # Setup graphics settings
+    hardware.graphics = {
+      enable = true;
+    };
+
+    # Tell NixOS to use NVIDIA driver
+    services.xserver.videoDrivers = [ "nvidia" ];
+    hardware.nvidia = {
+      modesetting.enable = true;
+      open = true;
+      nvidiaSettings = true;
+
+      powerManagement = {
+        enable = true;
+        finegrained = false;
+      };
+    };
+
+    hardware.bluetooth.enable = true;
+    hardware.bluetooth.powerOnBoot = true;
+
+    # Attempt to help Nvidia handle console properly
+    boot.loader.systemd-boot.consoleMode = "1";
+    boot.kernelParams = [ 
+      "nvidia_drm.modeset=1"
+      "nvidia_drm.fbdev=1" 
+      "usbcore.autosuspend=-1"
+    ];
+
     # Configure keymap in X11
     services.xserver.xkb = {
       layout = "us";
@@ -94,6 +135,13 @@
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
+    environment.sessionVariables = {
+      # removed to avoid issue with steam
+      #GBM_BACKEND = "nvidia-drm";
+      NIXOS_OZONE_WL = "1";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    };
+
     environment.systemPackages = with pkgs; [
       # Development Applications
       self.packages.${pkgs.stdenv.hostPlatform.system}.git
@@ -116,15 +164,20 @@
       gcc-arm-embedded
       # System applications
       wl-clipboard
-      # Gaming
-      steam
+      wl-clip-persist
       # User Applications
       obsidian
-      discord
+      vesktop
       yazi
       thunar
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     ];
+
+    # Enable/Disable wifi/ethernet for hotswaping
+    environment.shellAliases = {
+      wired-enable = "nmcli connection down 'FBI Van 0362' && nmcli connection up 'Wired connection 1'";
+      wireless-enable = "nmcli connection down 'Wired connection 1' && nmcli connection up 'FBI Van 0362'";
+    };
 
     # Setup font
     fonts.packages = with pkgs; [ 
@@ -133,15 +186,32 @@
     fonts.fontconfig.enable = true;
 
     # Setups zen to be default browser for clicking on links
-    #xdg.portal.enable = true;
-
-    # Setup nvidia stuff
-    hardware.nvidia = {
-      modesetting.enable = true;
-      powerManagement.enable = false;
-      powerManagement.finegrained= false;
-      open = false;
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+      config.common.default = "*";
     };
+
+    # Setup steam
+    programs.steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+
+      extest.enable = true;
+
+      package = pkgs.steam.override {
+        extraEnv = {
+          XDG_SESSION_TYPE = "x11";
+          QT_QPA_PLATFORM = "xcb";
+          GDK_BACKEND = "x11";
+          SDL_JOYSTICK_HIDAPI = "0";
+          SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "0";
+        };
+      };
+    };
+
+    programs.gamescope.enable = true;
 
     system.stateVersion = "26.05";
 
