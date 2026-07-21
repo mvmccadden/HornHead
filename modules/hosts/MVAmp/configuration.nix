@@ -140,6 +140,9 @@
       #GBM_BACKEND = "nvidia-drm";
       NIXOS_OZONE_WL = "1";
       __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+
+      # Additional flag to help compilers find CUDA drivers 
+      EXTRA_LDFLAGS = "-L/run/opengl-driver/lib";
     };
 
     environment.systemPackages = with pkgs; [
@@ -157,6 +160,9 @@
       python3
       nodejs
       rustup
+      # CUDA # Development 
+      cudaPackages.cudatoolkit
+      cudaPackages.cuda_nvcc
       # Nix Applications 
       direnv
       nix-direnv
