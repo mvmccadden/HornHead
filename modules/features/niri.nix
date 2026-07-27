@@ -96,7 +96,7 @@
           "Mod+Return".spawn-sh = lib.getExe pkgs.foot;
           "Mod+E".spawn-sh = lib.getExe unfreePkgs.zed-editor;
           "Mod+O".spawn-sh = lib.getExe unfreePkgs.obsidian;
-          "Mod+D".spawn-sh = lib.getExe pkgs.vesktop;
+          "Mod+D".spawn-sh = lib.getExe unfreePkgs.discord;
           "Mod+S".spawn-sh = "/run/current-system/sw/bin/steam";
           "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages."${pkgs.system}".beta;
 

@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.neovim = {
+  flake.nixosModules.neovim = { pkgs, lib, ... }: {
     imports = [ inputs.nvf.nixosModules.default ];
   
     programs.nvf = {
@@ -16,6 +16,12 @@
             wrap = false;
             smartcase = true;
             ignorecase = true;
+
+            # Handle C/CPP indenting
+            autoindent = true;
+            smartindent = true;
+            cindent = true;
+            
             signcolumn = "yes";
             number = true;
             relativenumber = true;
@@ -33,10 +39,21 @@
           };
 
           binds.whichKey.enable = true;
+
+          # Automatically close braces, parentheses, etc.
+          autopairs.nvim-autopairs.enable = true;
     
           # Plugins
           telescope.enable = true;
-          treesitter.enable = true;
+          treesitter = {
+            enable = true;
+            grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+              doxygen
+              c
+              cpp
+              nix
+            ];
+          };
 
           git.gitsigns = {
             enable = true;
@@ -119,28 +136,6 @@
             };
           };
 
-          # LSP
-          lsp = {
-            enable = true;
-            # Is annoying
-            #lightbulb.enable = true;
-            lspSignature.enable = true;
-            trouble.enable = true;
-
-            lspconfig.sources.nil_ls = ''
-              local lspconfig = require('lspconfig')
-              lspconfig.nil_ls.setup({
-                settings = {
-                  ['nil'] = {
-                    nix = {
-                      autoArchive = false,
-                    },
-                  },
-                },
-              })
-            '';
-          };
-
           languages = {
             enableTreesitter = true;
 
@@ -159,7 +154,53 @@
             html.enable = true;
           };
 
-          autocomplete.nvim-cmp.enable = true;
+          # LSP
+          lsp = {
+            enable = true;
+            lspSignature.enable = true;
+            trouble.enable = true;
+
+            lspconfig.sources = {
+              nil_ls = ''
+                local lspconfig = require('lspconfig')
+                lspconfig.nil_ls.setup({
+                  settings = {
+                    ['nil'] = {
+                      nix = {
+                        autoArchive = false,
+                      },
+                    },
+                  },
+                })
+              '';
+
+              clangd = ''
+                local lspconfig = require('lspconfig')
+                lspconfig.clangd.setup({
+                  cmd = {
+                    "clangd",
+                    "--background-index",
+                    "--clang-tidy",
+                    "--header-insertion=iwyu",
+                    "--completion-style=detailed",
+                    "--function-arg-placeholders",
+                    "--fallback-style={BasedOnStyle: LLVM, BreakBeforeBraces: Allman}",
+                  },
+                })
+              '';
+            };
+
+          };
+
+          autocomplete.nvim-cmp = {
+            enable = true;
+            # Remap completion keys as requested
+            mappings = {
+              confirm = "<Tab>";
+              next = "<C-n>";
+              previous = "<C-p>";
+            };
+          };
 
           # Themeing
           theme = {
@@ -195,7 +236,7 @@
                 vim.highlight.on_yank()
               end,
             })
-
+            
             vim.keymap.set("n", "<leader>sd", function()
               vim.diagnostic.open_float(0, { scope = "line" })
             end, { desc = "[S]how [D]iagnostic" })
@@ -203,10 +244,21 @@
             vim.keymap.set("n", "<leader>sl", function()
               vim.diagnostic.setloclist()
             end, { desc = "[S]how Diagnostic [L]ocation [L]ist" })
+            
+            -- Format current buffer via LSP (clangd) mapping
+            vim.keymap.set("n", "<leader>cf", function()
+              vim.lsp.buf.format()
+            end, { desc = "[C]ode [F]ormat" })
           '';
     
           # Keybinds
           keymaps = [
+            { 
+              key = "<Esc>"; 
+              mode = "n"; 
+              action = ":nohlsearch<CR>"; 
+              desc = "Clear search highlight";
+            }
             { 
               key = "<C-e>"; 
               mode = "n"; 

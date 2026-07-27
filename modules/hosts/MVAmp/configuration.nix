@@ -86,6 +86,7 @@
       };
     };
 
+    # Setup bluetooth
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
 
@@ -171,9 +172,10 @@
       # System applications
       wl-clipboard
       wl-clip-persist
+      unzip
       # User Applications
       obsidian
-      vesktop
+      discord 
       yazi
       thunar
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default

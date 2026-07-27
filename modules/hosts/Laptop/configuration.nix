@@ -107,9 +107,10 @@
       gcc-arm-embedded
       # System applications
       wl-clipboard
+      unzip
       # User Applications
       obsidian
-      discord
+      discord 
       yazi
       thunar
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
@@ -120,6 +121,10 @@
       nerd-fonts.jetbrains-mono
     ];
     fonts.fontconfig.enable = true;
+
+    # Setup LaptopHardware
+    hardware.bluetooth.enable = true;
+    hardware.bluetooth.powerOnBoot = true;
 
     # Setups zen to be default browser for clicking on links
     #xdg.portal.enable = true;
