@@ -154,6 +154,7 @@
       neovim
       zed-editor
       # Development Languages
+      gcc14
       gcc
       gnumake
       cmake
