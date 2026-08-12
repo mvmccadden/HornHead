@@ -76,8 +76,9 @@
     # Tell NixOS to use NVIDIA driver
     services.xserver.videoDrivers = [ "nvidia" ];
     hardware.nvidia = {
-      modesetting.enable = true;
       open = true;
+      package = config.boot.kernelPackages.nvidiaPackages.production;
+      modesetting.enable = true;
       nvidiaSettings = true;
 
       powerManagement = {
@@ -153,6 +154,7 @@
       foot
       neovim
       zed-editor
+      claude-code
       # Development Languages
       gcc14
       gcc
