@@ -124,6 +124,12 @@
       #media-session.enable = true;
     };
 
+    # DNS cahcine
+    services.resolved = {
+      enable = true;
+      dnssec = "false";
+    };
+
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.users.manoelv = {
       isNormalUser = true;
@@ -183,12 +189,6 @@
       thunar
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     ];
-
-    # Enable/Disable wifi/ethernet for hotswaping
-    environment.shellAliases = {
-      wired-enable = "nmcli connection down 'FBI Van 0362' && nmcli connection up 'Wired connection 1'";
-      wireless-enable = "nmcli connection down 'Wired connection 1' && nmcli connection up 'FBI Van 0362'";
-    };
 
     # Setup font
     fonts.packages = with pkgs; [ 

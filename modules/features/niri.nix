@@ -34,6 +34,7 @@
 
         environment = {
           "XDG_CURRENT_DESKTOP" = "niri";
+          "STEAM_HTTP2_DISABLE" = "1";
         };
 
         xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
@@ -57,20 +58,23 @@
         };
 
         outputs = {
-          "Samsung Electric Company SyncMaster HVKZ402586" = {
+          "HDMI-A-2" = {
+            mode = "2560x1600@119.998";
+            scale = 1.5;
             transform = "normal";
-            position = _: { props = { x = -1920; y = 0; }; };
+            position = _: { props = { x = 1920; y = 0; }; };
           };
 
-          "ASUSTek COMPUTER INC VG248 M7LMQS077701" = {
-            mode = "1920x1080@144.001";
+          "DP-6" = {
+            mode = "1920x1080@143.999";
             transform = "normal";
             position = _: { props = { x = 0; y = 0; }; };
           };
 
-          "Sceptre Tech Inc E205W-1600 0x062233CD" = {
-            transform = "90";
-            position = _: { props = { x = 1920; y = -200; }; };
+          "DP-5" = {
+            mode = "1920x1080@143.999";
+            transform = "normal";
+            position = _: { props = { x = -1920; y = 0; }; };
           };
         };
         
