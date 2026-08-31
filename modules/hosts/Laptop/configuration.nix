@@ -92,6 +92,7 @@
       foot
       neovim
       zed-editor
+      godot_4
       # Development Languages
       gcc
       gnumake

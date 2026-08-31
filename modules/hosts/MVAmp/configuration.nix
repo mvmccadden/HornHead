@@ -161,6 +161,7 @@
       neovim
       zed-editor
       claude-code
+      godot_4
       # Development Languages
       gcc14
       gcc
