@@ -20,9 +20,14 @@
 
     networking.hostName = "nixos";
 
-    networking.networkmanager= {
+    networking.networkmanager = {
       enable = true;
       wifi.backend = "iwd";
+      # Change DNS to cloudflare to fix slow loading issues
+      insertNameservers = [
+        "1.1.1.1" 
+        "1.0.0.1"
+      ];
       settings = {
         connection = {
           "wifi.powersave" = 2;
@@ -188,6 +193,7 @@
       discord 
       yazi
       thunar
+      proton-vpn
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     ];
 
