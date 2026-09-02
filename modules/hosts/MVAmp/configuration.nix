@@ -178,7 +178,7 @@
       python-launcher
       nodejs
       rustup
-      # CUDA # Development 
+      # CUDA Development 
       cudaPackages.cudatoolkit
       cudaPackages.cuda_nvcc
       # Nix Applications 
@@ -197,6 +197,8 @@
       thunar
       proton-vpn
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
+      # Games
+      prismlauncher
     ];
 
     # Setup font

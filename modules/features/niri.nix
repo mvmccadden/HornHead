@@ -65,6 +65,18 @@
             position = _: { props = { x = 1920; y = 0; }; };
           };
 
+          "DP-3" = {
+            mode = "1920x1080@143.999";
+            transform = "normal";
+            position = _: { props = { x = 0; y = 0; }; };
+          };
+
+          "DP-2" = {
+            mode = "1920x1080@143.999";
+            transform = "normal";
+            position = _: { props = { x = -1920; y = 0; }; };
+          };
+
           "DP-6" = {
             mode = "1920x1080@143.999";
             transform = "normal";
