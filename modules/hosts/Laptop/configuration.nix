@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
- 
+
   flake.nixosModules.LaptopConfiguration = { pkgs, libs, ... }: {
 
     # Import modules
@@ -93,14 +93,19 @@
       neovim
       zed-editor
       godot_4
+      scons # Python construction
       # Development Languages
       gcc
       gnumake
       cmake
       go
       python3
+      python-launcher
       nodejs
       rustup
+      # CUDA # Development 
+      cudaPackages.cudatoolkit
+      cudaPackages.cuda_nvcc
       # Nix Applications 
       direnv
       nix-direnv

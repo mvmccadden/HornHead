@@ -167,6 +167,7 @@
       zed-editor
       claude-code
       godot_4
+      scons # Python construction
       # Development Languages
       gcc14
       gcc
@@ -174,6 +175,7 @@
       cmake
       go
       python3
+      python-launcher
       nodejs
       rustup
       # CUDA # Development 
