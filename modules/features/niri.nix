@@ -116,6 +116,10 @@
           "Mod+S".spawn-sh = "/run/current-system/sw/bin/steam";
           "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages."${pkgs.system}".beta;
 
+          # Kill and refresh the noctalia bar
+          "Mod+R".spawn-sh = "pkill -f noctalia";
+          "Mod+Shift+R".spawn-sh = "${pkgs.niri}/bin/niri msg action spawn -- ${self.packages.${pkgs.system}.myNoctalia}/bin/noctalia-shell";
+
           # Desktop Functionality
           "Mod+Q".close-window = _: {};
 
