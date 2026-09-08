@@ -19,7 +19,7 @@
             autoindent = true;
             smartindent = true;
             cindent = true;
-            cinoptions = ":0,(0,u0,W4,g0,N-s,E-s";
+            cinoptions = ":0,(0,u0,W4,g0,N-s,E-s,{0,>0,g0,t0";
 
             signcolumn = "yes";
             number = true;
@@ -43,11 +43,14 @@
 
           treesitter = {
             enable = true;
+            indent.enable = false;
             grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
               doxygen
               c
               cpp
               nix
+              gdscript
+              godot_resource
             ];
           };
 
@@ -163,6 +166,14 @@
             lspSignature.enable = true;
             trouble.enable = true;
 
+            lspconfig.sources.gdscript = ''
+              local lspconfig = require('lspconfig')
+              lspconfig.gdscript.setup({
+                name = "godot",
+                cmd = { "nc", "localhost", "6008" },
+              })
+            '';
+
             lspconfig.sources.nil_ls = ''
               local lspconfig = require('lspconfig')
               lspconfig.nil_ls.setup({
@@ -248,6 +259,14 @@
               local hl = "DiagnosticSign" .. type
               vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
             end
+
+            -- Format on save for clang stuff
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              pattern = {"c", "cpp", "cu", "h", "hpp"},
+              callback = function()
+                vim.lsp.buf.format()
+              end,
+            })
 
             vim.api.nvim_create_autocmd("TextYankPost", {
               desc = "Highlight when yanking text",
