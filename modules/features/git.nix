@@ -12,6 +12,17 @@
         credential.helper = "libsecret";
         # Disable the askpass popup and use terminal request instead
         core.askpass = "";
+
+        merge = {
+          tool = "nvim";
+        };
+        mergetool = {
+          keepBackup = false;
+          prompt = false;
+          nvim = {
+            cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\"";
+          };
+        };
       };
     };
   };
