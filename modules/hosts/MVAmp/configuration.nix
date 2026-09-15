@@ -196,6 +196,7 @@
       yazi
       thunar
       proton-vpn
+      teams-for-linux
       inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
       # Games
       prismlauncher
