@@ -236,6 +236,9 @@
 
     programs.gamescope.enable = true;
 
+    # Setup OBS
+    programs.obs-studio.enable = true;
+
     system.stateVersion = "26.05";
 
     # Automatic updating
