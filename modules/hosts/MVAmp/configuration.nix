@@ -168,6 +168,7 @@
       claude-code
       godot_4
       scons # Python construction
+      opencode
       # Development Languages
       gcc14
       gcc

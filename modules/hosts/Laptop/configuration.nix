@@ -94,6 +94,7 @@
       zed-editor
       godot_4
       scons # Python construction
+      opencode
       # Development Languages
       gcc
       gnumake
