@@ -301,6 +301,7 @@
             { key = "<C-L>"; mode = "n"; action = "<C-w><C-L>"; }
             { key = "<C-J>"; mode = "n"; action = "<C-w><C-J>"; }
             { key = "<C-K>"; mode = "n"; action = "<C-w><C-K>"; }
+            { key = "<leader>rl"; mode = "n"; action = ":lsp restart<CR>"; desc = "[R]estart [L]SP"; }
           ];
         };
       };
