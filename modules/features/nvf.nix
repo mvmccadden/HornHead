@@ -42,13 +42,36 @@
 
           treesitter = {
             enable = true;
-            indent.enable = true;
+            indent = {
+              enable = true;
+              # Neovim ships a mature gdscript indent script. The tree-sitter
+              # gdscript indent query is unreliable, so let the built-in win.
+              excludes = [ "gdscript" ];
+            };
+            queries = [
+              {
+                # The gdshader grammar ships no indent query, so provide one.
+                type = "indents";
+                filetypes = [ "gdshader" ];
+                query = ''
+                  (compound_statement) @indent.begin
+                  (compound_statement
+                    "}" @indent.end)
+                  [
+                    ")"
+                    "}"
+                  ] @indent.branch
+                  (comment) @indent.auto
+                '';
+              }
+            ];
             grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
               doxygen
               c
               cpp
               nix
               gdscript
+              gdshader
               godot_resource
             ];
           };
@@ -142,13 +165,22 @@
 
           languages = {
             enableTreesitter = true;
+            enableDAP = true;
 
             clang = {
               enable = true;
               lsp.enable = true;
+              dap = {
+                enable = true;
+                debugger = "lldb-vscode";
+              };
             };
 
-            rust.enable = true;
+            rust = {
+              enable = true;
+              dap.adapter = "lldb-dap";
+            };
+
             go.enable = true;
             python.enable = true;
             typescript.enable = true;
@@ -164,27 +196,11 @@
             enable = true;
             lspSignature.enable = true;
             trouble.enable = true;
+          };
 
-            lspconfig.sources.gdscript = ''
-              local lspconfig = require('lspconfig')
-              lspconfig.gdscript.setup({
-                name = "godot",
-                cmd = { "nc", "localhost", "6008" },
-              })
-            '';
-
-            lspconfig.sources.nil_ls = ''
-              local lspconfig = require('lspconfig')
-              lspconfig.nil_ls.setup({
-                settings = {
-                  ['nil'] = {
-                    nix = {
-                      autoArchive = false,
-                    },
-                  },
-                },
-              })
-            '';
+          debugger.nvim-dap = {
+            enable = true;
+            ui.enable = true;
           };
 
           autocomplete.nvim-cmp = {
@@ -204,6 +220,29 @@
           };
 
           luaConfigRC.post = ''
+            -- GDScript / Godot LSP.
+            -- Requires the Godot editor to be running with its language
+            -- server enabled (default port 6005).
+            -- Godot's server is GDScript-only; .gdshader gets treesitter
+            -- highlighting but no LSP completions.
+            vim.lsp.config("gdscript", {
+              cmd = { "nc", "localhost", "6005" },
+              filetypes = { "gdscript" },
+              root_markers = { "project.godot", ".git" },
+            })
+            vim.lsp.enable("gdscript")
+
+            -- nil settings (server is enabled by nvf itself)
+            vim.lsp.config("nil", {
+              settings = {
+                ["nil"] = {
+                  nix = {
+                    autoArchive = false,
+                  },
+                },
+              },
+            })
+
             -- Auto-generate .clang-format in project root if missing
             vim.api.nvim_create_autocmd("FileType", {
               pattern = { "c", "cpp" },
