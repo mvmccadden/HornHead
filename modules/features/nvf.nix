@@ -17,9 +17,8 @@
             ignorecase = true;
 
             autoindent = true;
-            smartindent = true;
-            cindent = true;
-            cinoptions = ":0,(0,u0,W4,g0,N-s,E-s,{0,>0,g0,t0";
+            smartindent = false;
+            cindent = false;
 
             signcolumn = "yes";
             number = true;
@@ -43,7 +42,7 @@
 
           treesitter = {
             enable = true;
-            indent.enable = false;
+            indent.enable = true;
             grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
               doxygen
               c
