@@ -16,10 +16,6 @@
             smartcase = true;
             ignorecase = true;
 
-            autoindent = true;
-            smartindent = false;
-            cindent = false;
-
             signcolumn = "yes";
             number = true;
             relativenumber = true;
@@ -44,9 +40,11 @@
             enable = true;
             indent = {
               enable = true;
-              # Neovim ships a mature gdscript indent script. The tree-sitter
-              # gdscript indent query is unreliable, so let the built-in win.
-              excludes = [ "gdscript" ];
+              # Languages better served by their built-in indent script than
+              # tree-sitter's:
+              #   gdscript     -> Neovim's GDScript indent
+              #   c/cpp/cuda   -> cindent (matches clang-format output)
+              excludes = [ "gdscript" "c" "cpp" "cuda" ];
             };
             queries = [
               {
@@ -170,10 +168,7 @@
             clang = {
               enable = true;
               lsp.enable = true;
-              dap = {
-                enable = true;
-                debugger = "lldb-vscode";
-              };
+              # DAP is inherited from languages.enableDAP (lldb-vscode default)
             };
 
             rust = {
