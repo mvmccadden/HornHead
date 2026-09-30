@@ -114,11 +114,11 @@
           "Mod+O".spawn-sh = lib.getExe unfreePkgs.obsidian;
           "Mod+D".spawn-sh = lib.getExe unfreePkgs.discord;
           "Mod+S".spawn-sh = "/run/current-system/sw/bin/steam";
-          "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages."${pkgs.system}".beta;
+          "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".beta;
 
           # Kill and refresh the noctalia bar
           "Mod+R".spawn-sh = "pkill -f noctalia";
-          "Mod+Shift+R".spawn-sh = "${pkgs.niri}/bin/niri msg action spawn -- ${self.packages.${pkgs.system}.myNoctalia}/bin/noctalia-shell";
+          "Mod+Shift+R".spawn-sh = "${pkgs.niri}/bin/niri msg action spawn -- ${self.packages.${pkgs.stdenv.hostPlatform.system}.myNoctalia}/bin/noctalia-shell";
 
           # Desktop Functionality
           "Mod+Q".close-window = _: {};

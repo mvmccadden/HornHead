@@ -8,6 +8,7 @@
       self.nixosModules.niri
       self.nixosModules.foot
       self.nixosModules.neovim
+      self.nixosModules.home-manager
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -85,14 +86,14 @@
 
     environment.systemPackages = with pkgs; [
       # Development Applications
-      self.packages.${pkgs.system}.git
+      self.packages.${pkgs.stdenv.hostPlatform.system}.git
       foot
       neovim
       zed-editor
       # User Applications
       obsidian
       discord
-      inputs.zen-browser.packages."${pkgs.system}".default
+      inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default
     ];
 
     # Setup font
@@ -107,6 +108,8 @@
     # Automatic updating
     system.autoUpgrade.enable = true;
     system.autoUpgrade.dates = "weekly";
+    # Track this flake; adds --upgrade so nixpkgs + home-manager refresh too.
+    system.autoUpgrade.flake = "/home/manoelv/HornHead";
 
     # Automatic cleaning
     nix.gc.automatic = true;

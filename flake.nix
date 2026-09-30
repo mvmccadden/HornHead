@@ -8,6 +8,12 @@
 
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
+    # home-manager for declarative user application config (e.g. Zed)
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # nvf neovim in nixos
     nvf.url = "github:notashelf/nvf";
 

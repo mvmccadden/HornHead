@@ -8,6 +8,7 @@
       self.nixosModules.niri
       self.nixosModules.foot
       self.nixosModules.neovim
+      self.nixosModules.home-manager
     ];
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -132,7 +133,7 @@
     # DNS cahcine
     services.resolved = {
       enable = true;
-      dnssec = "false";
+      settings.Resolve.DNSSEC = false;
     };
 
     # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -245,6 +246,8 @@
     # Automatic updating
     system.autoUpgrade.enable = true;
     system.autoUpgrade.dates = "weekly";
+    # Track this flake; adds --upgrade so nixpkgs + home-manager refresh too.
+    system.autoUpgrade.flake = "/home/manoelv/HornHead";
 
     # Automatic cleaning
     nix.gc.automatic = true;
