@@ -3,11 +3,11 @@
   "base_keymap": "Zed",
 
   "ui_font_size": 12,
-  "buffer_font_size": 11,
+  "buffer_font_size": 12,
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "terminal": {
     "font_family": "JetBrainsMono Nerd Font",
-    "font_size": 11
+    "font_size": 12
   },
 
   "theme": {
