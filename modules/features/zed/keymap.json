@@ -20,8 +20,6 @@
       "space w J": "workspace::SwapPaneDown",
       "space w K": "workspace::SwapPaneUp",
       "space w L": "workspace::SwapPaneRight",
-      "space w =": "pane::IncreaseFontSize",
-      "space w -": "pane::DecreaseFontSize",
       "space w z": "workspace::ToggleEditorZoom",
 
       "space t a": "agent::ToggleFocus",
@@ -53,7 +51,7 @@
       "ctrl-j": "workspace::ActivatePaneDown",
       "ctrl-k": "workspace::ActivatePaneUp",
       "ctrl-l": "workspace::ActivatePaneRight",
-      "ctrl-w-z": "workspace::ToggleEditorZoom",
+      "ctrl-w z": "workspace::ToggleEditorZoom",
       "ctrl-shift-h": "workspace::SwapPaneLeft",
       "ctrl-shift-j": "workspace::SwapPaneDown",
       "ctrl-shift-k": "workspace::SwapPaneUp",
@@ -99,5 +97,24 @@
       "ctrl-n": "editor::ContextMenuNext",
       "ctrl-p": "editor::ContextMenuPrevious"
     }
+  },
+  {
+    "bindings": {
+      "space w =": [
+        "action::Sequence",
+        [
+          "zed::IncreaseBufferFontSize",
+          "zed::IncreaseUiFontSize"
+        ]
+      ],
+      "space w -": [
+        "action::Sequence",
+        [
+          "zed::DecreaseBufferFontSize",
+          "zed::DecreaseUiFontSize"
+        ]
+      ]
+    }
   }
 ]
+
