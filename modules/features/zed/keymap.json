@@ -61,6 +61,20 @@
     }
   },
   {
+    "context": "VimControl && !menu && vim_mode == normal",
+    "bindings": {
+      "s": "pane::SplitRight",
+      "shift-s": "pane::SplitDown"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "n": "project_panel::NewFile",
+      "%": null
+    }
+  },
+  {
     "context": "Workspace",
     "bindings": {
       "ctrl-e": "project_panel::ToggleFocus",
