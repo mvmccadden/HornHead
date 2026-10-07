@@ -63,15 +63,17 @@
   {
     "context": "VimControl && !menu && vim_mode == normal",
     "bindings": {
-      "s": "pane::SplitRight",
-      "shift-s": "pane::SplitDown"
+      "s": "pane::SplitVertical",
+      "shift-s": "pane::SplitHorizontal"
     }
   },
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "n": "project_panel::NewFile",
-      "%": null
+      "%": null,
+      "s": "project_panel::OpenSplitVertical",
+      "shift-s": "project_panel::OpenSplitHorizontal"
     }
   },
   {
