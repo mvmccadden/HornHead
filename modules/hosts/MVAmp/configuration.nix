@@ -74,6 +74,16 @@
     # Setup niri as default enviornment
     services.displayManager.defaultSession = "niri";
 
+    # Google Stadia Controller (USB 18d1:9400)
+    # SDL/Steam Input needs raw hidraw access to use its HIDAPI Stadia driver.
+    # Without this the kernel evdev fallback is used and Steam reports
+    # "hid_read failure" (rumble still works via the kernel FF node).
+    # 0666 is used because services.udev.extraRules is parsed too late for
+    # the systemd "uaccess" ACL tag to be applied.
+    services.udev.extraRules = ''
+      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="18d1", ATTRS{idProduct}=="9400", MODE="0666"
+    '';
+
     # Setup graphics settings
     hardware.graphics = {
       enable = true;
@@ -230,11 +240,12 @@
           XDG_SESSION_TYPE = "x11";
           QT_QPA_PLATFORM = "xcb";
           GDK_BACKEND = "x11";
-          SDL_JOYSTICK_HIDAPI = "0";
-          SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "0";
         };
       };
     };
+
+    # Enable steam controllers
+    hardware.steam-hardware.enable = true;
 
     programs.gamescope.enable = true;
 
